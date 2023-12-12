@@ -32,6 +32,7 @@ nano .env
 ```
 Ajoutez le contenu, en remplaçant "unifi.domaine.tld" par votre domaine FQDN sur la ligne "TREAFIK_FQDN="  
 Ajoutez votre mot de passe, en remplaçant "password" par votre mot de passe sur la ligne "DB_PASSWD="  
+(Pas de caractère spéciaux)  
 
 Pour quitter "nano" faites "CTRL"+"X" ensuite "Y" et "ENTER"  
 
