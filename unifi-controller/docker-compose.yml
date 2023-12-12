@@ -1,0 +1,87 @@
+version: "2.1"
+services:
+  unifi-network-application:
+    image: lscr.io/linuxserver/unifi-network-application:latest
+    container_name: unifi-network-application
+    depends_on:
+      - mongodb
+    networks:
+      - traefik_web
+      - internal_network
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TREAFIK_SERVICE}.entrypoints=websecure"
+      - "traefik.http.routers.${TREAFIK_SERVICE}.rule=Host(`${TREAFIK_FQDN}`)"
+      - "traefik.http.routers.${TREAFIK_SERVICE}.tls=true"
+      - "traefik.http.routers.${TREAFIK_SERVICE}.tls.certresolver=myresolver"
+      - "traefik.http.routers.${TREAFIK_SERVICE}.tls.domains[0].main=${TREAFIK_FQDN}"
+      - "traefik.http.routers.${TREAFIK_SERVICE}.tls.domains[0].sans=${TREAFIK_FQDN}"
+      - "traefik.http.routers.${TREAFIK_SERVICE}.service=${TREAFIK_SERVICE}"
+      - "traefik.http.routers.${TREAFIK_SERVICE}.middlewares=unifiHeaders@file"
+      - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.services.${TREAFIK_SERVICE}.loadbalancer.server.port=8443"
+      - "traefik.http.services.${TREAFIK_SERVICE}.loadbalancer.server.scheme=https"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Zurich
+      - MONGO_USER=unifi
+      - MONGO_PASS=${DB_PASSWD}
+      - MONGO_HOST=mongodb
+      - MONGO_PORT=27017
+      - MONGO_DBNAME=unifi
+      - MEM_LIMIT=1024 #optional
+      - MEM_STARTUP=1024 #optional
+    volumes:
+      - ./config:/config
+    ports:
+#      - 8443:8443
+      - 3478:3478/udp
+#      - 10001:10001/udp
+      - 8080:8080
+#      - 1900:1900/udp #optional
+#      - 8843:8843 #optional
+#      - 8880:8880 #optional
+#      - 6789:6789 #optional
+      - 5514:5514/udp #optional
+    restart: always
+
+  mongodb:
+    image: mongo:4.4
+    restart: always
+    networks:
+      - internal_network
+    environment:
+      PUID: 1000
+      PGID: 1000
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - unifi-mongo-db:/data
+
+#  mongo-express:
+#    image: mongo-express
+#    restart: always
+#    depends_on:
+#      - mongodb
+#    networks:
+#      - internal_network
+#    ports:
+#      - 8081:8081
+#    environment:
+#      ME_CONFIG_MONGODB_URL: mongodb://unifi:${DB_PASSWD}@mongodb
+#      ME_CONFIG_MONGODB_SERVER: mongodb
+#      ME_CONFIG_BASICAUTH_USERNAME: unifi
+#      ME_CONFIG_BASICAUTH_PASSWORD: ${DB_PASSWD}
+#    volumes:
+#      - unifi-mongo-web:/data/db
+
+volumes:
+  unifi-mongo-db:
+#  unifi-mongo-web:
+
+networks:
+  traefik_web:
+    external: true
+  internal_network:
+    driver: bridge

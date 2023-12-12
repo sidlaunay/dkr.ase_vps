@@ -1,0 +1,16 @@
+[http.middlewares.simpleAuth.basicAuth]
+  users = [
+    "user:htpasswd_password" #modifier le user:password
+  ]
+
+[http.routers.api]
+  rule = "Host(`trae.domain.tld`)" #modifier le domaine FQDN
+  entrypoints = ["websecure"]
+  middlewares = ["simpleAuth"]
+  service = "api@internal"
+  [http.routers.api.tls]
+    certResolver = "lets-encrypt"
+
+[http.middlewares]
+  [http.middlewares.unifiHeaders.headers]
+    customFrameOptionsValue = "SAMEORIGIN"

@@ -1,0 +1,27 @@
+version: "3.6"
+
+services:
+  portainer:
+    image: "portainer/portainer-ce:latest"
+    container_name: "portainer"
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/data
+    networks:
+      - traefik_web
+    restart: always
+    labels:
+      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.redirect.entryPoint=https"
+      - "traefik.frontend.redirect.permanent=true"
+      - "traefik.docker.network=traefik_web"
+      - "traefik.http.routers.${TREAFIK_SERVICE}.rule=Host(`${TREAFIK_FQDN}`)"
+      - "traefik.http.routers.${TREAFIK_SERVICE}.tls=true"
+      - "traefik.http.routers.${TREAFIK_SERVICE}.tls.certresolver=lets-encrypt"
+      - "traefik.http.routers.${TREAFIK_SERVICE}.service=${TREAFIK_SERVICE}"
+      - "traefik.http.services.${TREAFIK_SERVICE}.loadbalancer.server.port=9000"
+
+networks:
+  traefik_web:
+    external: true
