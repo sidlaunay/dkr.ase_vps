@@ -32,6 +32,8 @@ nano .env
 ```
 Ajoutez le contenu, en remplaçant port.domaine.tld par votre domaine FQDN sur la ligne "TREAFIK_FQDN="  
 
+Pour quitter "nano" faites "CTRL"+"X" ensuite "Y" et "ENTER"  
+
 ## Étape 2: Création et Configuration de docker-compose.yml pour Portainer
 Créer et configurer docker-compose.yml pour Portainer:
 
@@ -40,6 +42,8 @@ Utilisez
 nano docker-compose.yml
 ```
 Copier le contenu.
+
+Pour quitter "nano" faites "CTRL"+"X" ensuite "Y" et "ENTER"  
 
 ## Étape 3: Configuration du DNS:
 
