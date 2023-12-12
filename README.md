@@ -7,10 +7,11 @@ Cloner le dépôt dkr.ase_vps pour configurer rapidement les services Docker tel
 ## Prérequis :
 Docker-compose installés.  
 Nano installé.  
-Git installé.
+Git installé.  
+Curl installé.  
 
 ## Étape 0: Préparation de l'Environnement de Travail
-Allez a la racine 
+Allez à la racine 
 
 Utilisez
 ```
@@ -71,6 +72,18 @@ ls
 ## Étape 2: Configuration de Traefik
 ### Étape 2.0: Allez dans le répertoire traefik:
 
+Allez dans le dossier "docker" et contrôlez la présence des dossiers
+
+Utilisez 
+```
+cd /docker
+```
+
+Utilisez 
+```
+ls
+```
+
 Une fois le "ls" effectué "traefik" doit apparaître  
 
 Utilisez
@@ -92,6 +105,8 @@ nano traefik/traefik.toml
 ```
 
 Remplacez "email@domain.tld" par votre adresse e-mail.  
+
+Pour quitter "nano" faites "CTRL"+"X" ensuite "Y" et "ENTER"  
 
 ### Étape 2.2: Configuration Avancée avec traefik_dynamic.toml:
 
@@ -115,10 +130,12 @@ nano traefik_dynamic.toml
 ```
   
 Configurer l'authentification et les routes:  
-Remplacez user:htpasswd_password par le résultat de htpasswd.  
-Changez trae.domain.tld par votre domaine
+Remplacez "user:htpasswd_password" par le résultat de htpasswd.  
+Changez "trae.domain.tld" par votre domaine "FQDN"
 
-### Étape 2.2: Création de acme.json
+Pour quitter "nano" faites "CTRL"+"X" ensuite "Y" et "ENTER"  
+
+### Étape 2.2: Création de acme.json:
 
 Créer acme.json:  
 Utilisez 
@@ -131,25 +148,156 @@ Sécurisez le fichier avec
 ```
 chmod 660 acme.json
 ```
+### Étape 2.3: Configuration du DNS:
 
-Démarrer traefik:
+Récupérez l'ip publique de la machine afin de faire un enregistrement chez votre fournisseur DNS  
+
+Utilisez 
+
+```
+curl ifconfig.net
+```
+
+Ensuite allez sur le site de votre hébergeur DNS afin de faire un enregistrement de "type A"
+
+example: trae.domain.tld = [IP PUBLIQUE]
+
+### Étape 2.4: Démarrer traefik:
 
 Utilisez 
 ```
 docker-compose up -d
 ```
-Unifi-Controller sera maintenant accessible via l'adresse spécifiée dans le fichier .env (par exemple trae.domain.tld).  
+Unifi-Controller sera maintenant accessible via l'adresse spécifiée dans le fichier "traefik_dynamic.toml" (par exemple trae.domain.tld).  
 
 
-## Étape 3: Configuration de Portainer
+## Étape 3: Configuration de Portainer  
+### Étape 3.0: Allez dans le répertoire Portainer:  
+Allez dans le dossier "docker" et contrôlez la présence des dossiers  
 
-Démarrer Unifi-Controller:
+Utilisez 
+```
+cd /docker
+```
 
+Utilisez 
+```
+ls
+```
+
+Une fois le "ls" effectué "portainer" doit apparaître  
+
+Utilisez  
+```
+cd portainer/
+```
+
+Voir la liste de fichiers présents  
+Utilisez 
+```
+ls
+```
+
+### Étape 3.1: Configuration du Fichier .env pour Portainer  
+
+Allez dans le fichier ".env"
+
+```
+nano .env
+```
+
+Remplacez "port.domaine.tld" par votre domaine "FQDN" sur la ligne "TREAFIK_FQDN="  
+
+Pour quitter "nano" faites "CTRL"+"X" ensuite "Y" et "ENTER"  
+
+### Étape 3.2: Configuration du DNS:
+
+Récupérez l'ip publique de la machine afin de faire un enregistrement chez votre fournisseur DNS  
+
+Utilisez 
+
+```
+curl ifconfig.net
+```
+
+Ensuite allez sur le site de votre hébergeur DNS afin de faire un enregistrement de "type A"
+
+example: port.domain.tld = [IP PUBLIQUE]  
+
+### Étape 3.3: Démarrer Portainer:
+Utilisez 
+```
+docker-compose up -d
+```
+Portainer sera maintenant accessible via l'adresse spécifiée dans le fichier .env (par exemple port.domain.tld).
+
+## Étape 4: Configuration de Unifi-controller  
+### Étape 4.0: Allez dans le répertoire Unifi-controller:
+Allez dans le dossier "docker" et contrôlez la présence des dossiers  
+
+Utilisez 
+```
+cd /docker
+```
+
+Utilisez 
+```
+ls
+```
+
+Une fois le "ls" effectué "unifi-controller" doit apparaître  
+
+Utilisez  
+```
+cd unifi-controller/
+```
+
+Voir la liste de fichiers présents  
+Utilisez 
+```
+ls
+```
+
+### Étape 4.1: Configuration du Fichier .env pour Unifi-controller  
+
+Allez dans le fichier ".env"
+
+```
+nano .env
+```
+
+Remplacez "unifi.domaine.tld" par votre domaine "FQDN" sur la ligne "TREAFIK_FQDN="  
+Ajoutez votre mot de passe, en remplaçant "password" par votre mot de passe sur la ligne "DB_PASSWD="  
+(Pas de caractère spéciaux)
+
+
+Pour quitter "nano" faites "CTRL"+"X" ensuite "Y" et "ENTE
+
+### Étape 4.2: Configuration du DNS:
+
+Récupérez l'ip publique de la machine afin de faire un enregistrement chez votre fournisseur DNS  
+
+Utilisez 
+
+```
+curl ifconfig.net
+```
+
+Ensuite allez sur le site de votre hébergeur DNS afin de faire un enregistrement de "type A"
+
+example: port.domain.tld = [IP PUBLIQUE]
+
+### Étape 4.3: Démarrer Unifi-Controller:
 Utilisez 
 ```
 docker-compose up -d
 ```
 Unifi-Controller sera maintenant accessible via l'adresse spécifiée dans le fichier .env (par exemple unifi.domain.tld).  
+
+
+
+
+
 
 ## Vérification de l'État des Conteneurs  
 Tapez la commande suivante pour afficher l'état de tous les conteneurs Docker en cours d'exécution :  
