@@ -5,7 +5,8 @@ Installer et configurer un contrôleur Unifi, une interface de gestion de résea
 
 ## Prérequis :
 Docker-compose installés.  
-Nano installé.
+Nano installé.  
+Curl installé.  
 
 ## Étape 0: Préparation de l'Environnement de Travail
 Créer un dossier pour le docker-compose  
@@ -41,7 +42,22 @@ nano docker-compose.yml
 ```
 Copier le contenu.
 
-## Étape 3: Lancement de Unifi-Controller
+## Étape 3: Configuration du DNS:
+
+Récupérez l'ip publique de la machine afin de faire un enregistrement chez votre fournisseur DNS  
+
+Utilisez 
+
+```
+curl ifconfig.net
+```
+
+Ensuite allez sur le site de votre hébergeur DNS afin de faire un enregistrement de "type A"
+
+example: trae.domain.tld = [IP PUBLIQUE]
+
+
+## Étape 4: Lancement de Unifi-Controller
 Démarrer Unifi-Controller:
 
 Utilisez 
