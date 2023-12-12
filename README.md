@@ -101,7 +101,7 @@ ls
 
 Utilisez
 ```
-nano traefik/traefik.toml
+nano traefik.toml
 ```
 
 Remplacez "email@domain.tld" par votre adresse e-mail.  
