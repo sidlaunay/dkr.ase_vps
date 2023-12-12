@@ -122,7 +122,7 @@ Utilisez
 htpasswd -nB [USERNAME]
 ```
 pour générer un mot de passe.  
-Copiez le résultat (ex. user:$2y$05$...) dans traefik_dynamic.toml  
+Copiez le résultat (ex. user:$2y$05$...) dans traefik_dynamic.toml pour remplacer "user:htpasswd_password"  
 
 Utilisez
 ```
