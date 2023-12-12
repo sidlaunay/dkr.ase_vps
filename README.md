@@ -6,9 +6,21 @@ Cloner le dépôt dkr.ase_vps pour configurer rapidement les services Docker tel
 
 ## Prérequis :
 Docker-compose installés.  
+```
+apt install docker-compose
+```
 Nano installé.  
+```
+apt install nano
+```
 Git installé.  
+```
+apt install git
+```
 Curl installé.  
+```
+apt install curl
+```
 
 ## Étape 0: Préparation de l'Environnement de Travail
 Allez à la racine 
