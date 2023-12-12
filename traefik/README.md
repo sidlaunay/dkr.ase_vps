@@ -5,7 +5,8 @@ Installer et configurer Traefik comme reverse proxy pour les conteneurs Docker.
 
 ## Prérequis :
 Docker-compose installés.  
-Nano installé.
+Nano installé.  
+Curl installé.  
 
 ## Étape 0: Préparation de l'Environnement de Travail
 Créer un dossier pour le docker-compose  
@@ -28,7 +29,7 @@ Utilisez
 ```
 nano http.yml  
 ```
-Copiez-y le contenu fourni pour la configuration des middlewares HTTP.
+Ajoutez le contenu pour la configuration des middlewares HTTP.
 
 ## Étape 2: Configuration de tls.yml
 Créer le fichier tls.yml:  
@@ -65,6 +66,7 @@ Configurer l'authentification et les routes:
 Remplacez user:htpasswd_password par le résultat de htpasswd.  
 Changez trae.domain.tld par votre domaine.  
 
+
 ## Étape 5: Docker-compose
 Créer et configurer docker-compose.yml:  
 Utilisez 
@@ -84,7 +86,22 @@ Sécurisez le fichier avec
 chmod 660 acme.json
 ```
 
-## Étape 7: Lancement de Traefik
+## Étape 7: Configuration du DNS:
+
+Récupérez l'ip publique de la machine afin de faire un enregistrement chez votre fournisseur DNS  
+
+Utilisez 
+
+```
+curl ifconfig.net
+```
+
+Ensuite allez sur le site de votre hébergeur DNS afin de faire un enregistrement de "type A"
+
+example: trae.domain.tld = [IP PUBLIQUE]
+
+
+## Étape 8: Lancement de Traefik
 Démarrer Traefik:  
 Exécutez 
 ```
