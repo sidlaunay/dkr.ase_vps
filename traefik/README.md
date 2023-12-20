@@ -83,7 +83,7 @@ touch acme.json
 ```
 Sécurisez le fichier avec 
 ```
-chmod 660 acme.json
+chmod 600 acme.json
 ```
 
 ## Étape 7: Configuration du DNS:
